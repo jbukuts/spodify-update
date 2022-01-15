@@ -1,0 +1,84 @@
+.menuScreen {
+    padding-top: 3px;
+    margin-right: 15px;
+    margin-left: 15px;
+    flex:none;
+    width: inherit;
+    height: auto;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: left;
+}
+
+.playing::after {
+    content: '*';
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+}
+
+.isMenu::after {
+    position: absolute;
+    width: 100%;
+    right: 0px;
+    height: inherit;
+    content: '>';
+    text-align: right;
+    font-size: 20px;
+    margin-top: -3px;
+    padding-right: 10px;
+}
+
+p, input {
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.menuItem {
+    transition: all .1s linear;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-right: 30px;
+}
+
+.menuItem:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.justified {
+    margin: auto !important;
+    text-align: justify !important;
+    height: 21px !important;
+    white-space: normal;
+}
+
+.justified::after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+
+input {
+    display: block;
+    font-size: 15px;
+    width: 100%;
+    height: 20px;
+    font-family: 'Chicago';
+    border: none;
+}
+
+input:focus {
+    outline: none;
+}

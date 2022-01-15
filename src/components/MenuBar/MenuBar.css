@@ -1,0 +1,23 @@
+.menu {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 3px;
+    border-bottom: 1px solid black;
+}
+
+.mainTitle {
+    margin: 0px;
+    transition: all .1s linear;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.mainTitle:hover {
+    background: rgb(0, 0, 0);
+    color: white;
+    cursor: pointer;
+}

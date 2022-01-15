@@ -1,0 +1,29 @@
+.searchBar {
+    width: 100%;
+    display: table;
+}
+
+.inputWrapper {
+    display: table-cell;
+    width: 100%;
+}
+
+.inputWrapper > input {
+    width: 100%;
+}
+
+button {
+    width: 50px;
+    height: 30px;
+    font-family: 'Chicago';
+    background-color: white;
+    border: 1px solid black;
+    transition: all .1s linear;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+}

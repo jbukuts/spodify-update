@@ -1,0 +1,51 @@
+:root {
+    --size: 60%;
+    --blob-speed: 2s;
+    --blur: 100px;
+    --glass-opacity: 1;
+    --blob-opacity: .7
+}
+
+.coverBlur {
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    position: absolute;
+    z-index: -1;
+    opacity: var(--glass-opacity);
+}
+
+.blobs {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -3;
+    top: 0;
+    left: 0;
+}
+
+.blob {
+    width: var(--size);
+    height: var(--size);
+    z-index: -2;
+    position: absolute;
+    border-radius: 50%;
+    opacity: var(--blob-opacity);
+    transition: var(--blob-speed) border-radius linear, .25s background-color linear;
+}
+
+.topRight {
+    right: 0;
+    top: 0;
+}
+
+.bottomRight {
+    bottom: 0;
+    right: 0;
+}
+
+.bottomLeft {
+    bottom: 0;
+    left: 0;
+}

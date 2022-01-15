@@ -1,0 +1,75 @@
+.nowPlaying {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.nowPlaying > p {
+    width: 80%;
+    margin: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
+}
+
+.scrubBar {
+    position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    height: 15px;
+    border: 2px solid black;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: .05s border-radius linear;
+}
+
+.scrubBar:hover {
+    border-radius: 0px;
+}
+
+.scrubBar:hover > .scrubLength  {
+    background: white;
+}
+
+.scrubBar:hover > .scrubLength > .scrubHandle {
+    opacity: 1;
+}
+
+.scrubLength {
+    height: 100%;
+    background: rgb(160, 160, 160);
+}
+
+.scrubHandle {
+    opacity: 0;
+    margin-left: -5.5px;
+    width: 11px;
+    height: 11px;
+    background-color: black;
+    position: absolute;
+    top: 2px;
+    transform: rotate(45deg);
+}
+
+.scrubHandle:hover {
+    cursor: pointer;
+}
+
+.playerTime {
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    text-align: justify;
+    height: fit-content;
+}
+
+.playerTime:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+
+p:hover {
+    cursor: pointer;
+}
