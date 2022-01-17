@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./NowPlaying.css";
 import {
   getCurrentlyPlaying,
@@ -71,24 +71,20 @@ const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
     return `${minutes}:${String(leftOver).padStart(2, "0")}`;
   };
 
-  const scrubSong = useCallback(
-    (e) => {
-      if (mouseDown.current) {
-        var rect = scrubRef.current.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        const percent = x / scrubRef.current.offsetWidth;
-        scrubLengthRef.current.style.width = `${Math.floor(percent * 100)}%`;
-        scrubHandleRef.current.style.left = `${Math.floor(percent * 100)}%`;
+  const scrubSong = (e) => {
+    if (mouseDown.current) {
+      var rect = scrubRef.current.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      const percent = x / scrubRef.current.offsetWidth;
+      scrubLengthRef.current.style.width = `${Math.floor(percent * 100)}%`;
+      scrubHandleRef.current.style.left = `${Math.floor(percent * 100)}%`;
 
-        elapsedRef.current = (elapsedRef.current + leftRef.current) * percent;
-        leftRef.current =
-          (elapsedRef.current + leftRef.current) * (1 - percent);
-        setElapsed(elapsedRef.current);
-        setLeft(leftRef.current);
-      }
-    },
-    [elapsed, left]
-  );
+      elapsedRef.current = (elapsedRef.current + leftRef.current) * percent;
+      leftRef.current = (elapsedRef.current + leftRef.current) * (1 - percent);
+      setElapsed(elapsedRef.current);
+      setLeft(leftRef.current);
+    }
+  };
 
   useEffect(() => {
     player.getCurrentState().then((state) => handleStateChange(state));

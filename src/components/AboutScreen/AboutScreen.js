@@ -1,16 +1,17 @@
 import "./AboutScreen.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AboutScreen = ({ userData }) => {
-  const { display_name } = userData;
+  const [displayName, setDisplayName] = useState();
 
   useEffect(() => {
-    console.log(userData);
-  }, []);
+    const { display_name } = userData;
+    setDisplayName(display_name);
+  }, [userData]);
 
   return (
     <>
-      <p className="aboutTitle">{display_name}'s iPod</p>
+      <p className="aboutTitle">{displayName}'s iPod</p>
     </>
   );
 };

@@ -3,6 +3,16 @@
   src: local('Chicago'), url(./fonts/ChicagoFLF.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Garamond';
+  src: local('Garamond'), url(./fonts/Garamond/AppleGaramond.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  src: local('Helvetica'), url(./fonts/Helvetica.otf) format('opentype');
+}
+
 body {
   font-family: 'Chicago';
   padding: 0;

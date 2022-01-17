@@ -70,7 +70,7 @@ const SettingsScreen = ({
       setRepeatMode(repeat_state);
       setShuffleMode(shuffle_state);
     });
-  }, []);
+  }, [token]);
 
   return (
     <>

@@ -22,9 +22,9 @@ const App = () => {
   const [screens, setScreenState] = useState([]);
   const [token, setToken] = useState();
   const [player, setPlayer] = useState();
+  const [playState, setPlayState] = useState();
   const [menuTitle, setMenuTitle] = useState(["Menu"]);
   const [albumArt, setAlbumArt] = useState();
-  const [playerState, setPlayerState] = useState(null);
   const [fullyLoaded, setFullyLoaded] = useState(false);
   const [keyEventsOn, setKeyEventsOn] = useState(true);
 
@@ -68,10 +68,10 @@ const App = () => {
       const isNowPlaying = oldScreens.findIndex(
         (t) => t.screen.type === NowPlaying
       );
-      console.log(screenToAdd.type === NowPlaying, isNowPlaying);
       if (screenToAdd.type === NowPlaying && isNowPlaying > -1) {
         return oldScreens.slice(0, isNowPlaying + 1);
       }
+      //return [...oldScreens, screenToAdd];
       return [...oldScreens, { screen: screenToAdd, searchBar: addSearchBar }];
     });
   }, []);
@@ -222,6 +222,8 @@ const App = () => {
         setPlayer(p);
       });
     }
+
+    return () => player && player.disconnect();
   }, [token]);
 
   // after play get the albums
@@ -234,8 +236,8 @@ const App = () => {
           },
         },
       } = state;
-      setPlayerState(state);
       setAlbumArt(images[0].url);
+      setPlayState(state);
     };
 
     if (player) {
@@ -292,7 +294,7 @@ const App = () => {
     }
 
     return () => document.removeEventListener("keyup", createKeyListeners);
-  }, [keyEventsOn, player, menuTitle, screens]);
+  }, [keyEventsOn, player, menuTitle, screens, goBack]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -397,7 +399,7 @@ const App = () => {
         </div>
       </div>
       {albumArt && (
-        <MiniPlayer imageURL={albumArt} setShowScreen={setShowScreen} />
+        <MiniPlayer playerState={playState} imageURL={albumArt} setShowScreen={setShowScreen} />
       )}
       {albumArt && <Blobs imageURL={albumArt}></Blobs>}
     </div>

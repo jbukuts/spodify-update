@@ -1,5 +1,5 @@
 import "./SearchScreen.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   getMultipleAlbums,
   performSearch,
@@ -8,7 +8,6 @@ import SongList from "../SongList/SongList";
 
 const SearchScreen = ({ token, addNewScreen, player }) => {
   const [results, setResults] = useState(<></>);
-  const [loading, setLoading] = useState(false);
 
   const formRef = useRef(null);
 

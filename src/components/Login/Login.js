@@ -1,5 +1,3 @@
-const CLIENT_ID = "0981792b5bc94457a102687309d0beb6";
-const REDIRECT_URI = "http://localhost:3000";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 
@@ -31,10 +29,10 @@ const Login = () => {
     const state = generateRandomString(16);
 
     const queryOptions = new URLSearchParams({
-      response_type: "token",
-      client_id: CLIENT_ID,
+      response_type: RESPONSE_TYPE,
+      client_id: process.env.REACT_APP_CLIENT_ID,
       scope: scope,
-      redirect_uri: REDIRECT_URI,
+      redirect_uri: process.env.REACT_APP_REDIRECT_URI,
       state: state,
     });
 

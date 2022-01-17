@@ -1,9 +1,3 @@
-Number.prototype.between = function (a, b) {
-  var min = Math.min.apply(Math, [a, b]),
-    max = Math.max.apply(Math, [a, b]);
-  return this > min && this < max;
-};
-
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -16,7 +10,6 @@ export function createPalette(imgURL, size = 10, downScaleAmount = 0) {
       canvas.height = img.height;
       canvas.width = img.width;
       ctx.drawImage(img, 0, 0);
-      //document.body.append(canvas);
 
       // get pixel data from the image
       var pixelData = ctx
@@ -34,9 +27,6 @@ export function createPalette(imgURL, size = 10, downScaleAmount = 0) {
           ? downscaleRGBVals(rgbData, canvas.width, downScaleAmount)
           : rgbData;
 
-      //const imgData = new ImageData(createImageData(scaledRGB), img.width / downScaleAmount);
-      //ctx.putImageData(imgData, 0, 0);
-
       // bin the array in a 3 x 3 x 3 map
       let binArray = [];
       for (var a = 0; a < 255; a += 85) {
@@ -46,11 +36,13 @@ export function createPalette(imgURL, size = 10, downScaleAmount = 0) {
             const bDetla = b + 85;
             const cDelta = c + 85;
 
+            const between = (v, a, b) => v > a && v < b;
+
             const bin = scaledRGB.filter(
-              (x, i) =>
-                x[0].between(a, aDelta) &&
-                x[1].between(b, bDetla) &&
-                x[2].between(c, cDelta)
+              (x) =>
+                between(x[0], aDelta - 85, aDelta) &&
+                between(x[1], bDetla - 85, bDetla) &&
+                between(x[2], cDelta - 85, cDelta)
             );
             binArray.push(bin);
           }

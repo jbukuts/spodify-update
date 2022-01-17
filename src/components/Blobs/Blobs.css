@@ -1,6 +1,6 @@
 :root {
     --size: 60%;
-    --blob-speed: 2s;
+    --blob-speed: 4s;
     --blur: 100px;
     --glass-opacity: 1;
     --blob-opacity: .7

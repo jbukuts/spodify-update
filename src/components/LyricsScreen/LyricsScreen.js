@@ -10,7 +10,7 @@ const LyricsScreen = ({ lyricsBody }) => {
         .filter((x) => x !== "")
         .slice(0, -2);
     });
-  }, []);
+  }, [lyricsBody]);
 
   return (
     <div style={{ paddingLeft: "3px", paddingRight: "3px" }}>

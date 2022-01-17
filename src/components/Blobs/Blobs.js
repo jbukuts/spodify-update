@@ -1,64 +1,51 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPalette } from "../../common/palette";
+import { getRandomInt } from "../../common/helper";
 import "./Blobs.css";
 
 const Blobs = ({ imageURL }) => {
   const [palette, setPalette] = useState();
   const blobsRef = useRef();
-
-  const colorString = (rgbArray) => {
-    return `rgb(${rgbArray[0]},${rgbArray[1]},${rgbArray[2]})`;
-  };
-
-  //The maximum is exclusive and the minimum is inclusive
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  };
-
-  const buildPalette = () => {
-    createPalette(imageURL, 10, 16).then((r) => {
-      const bgColor = colorString(r.shift());
-      r = r
-        .sort(() => (Math.random() > 0.5 ? 1 : -1))
-        .slice(0, 4)
-        .map((cArr) => colorString(cArr));
-      setPalette(() => [bgColor, ...r]);
-    });
-  };
+  const blobPositions = ["", "bottomRight", "topRight", "bottomLeft"];
 
   useEffect(() => {
-    buildPalette(imageURL);
-
     const moveInterval = setInterval(() => {
       const min = 0;
       const max = 1000000;
       [...blobsRef.current.children].forEach((blob) => {
-        blob.style.borderTopLeftRadius = `${getRandomInt(
-          min,
-          max
-        )}px ${getRandomInt(min, max)}px`;
-        blob.style.borderTopRightRadius = `${getRandomInt(
-          min,
-          max
-        )}px ${getRandomInt(min, max)}px`;
-        blob.style.borderBottomLeftRadius = `${getRandomInt(
-          min,
-          max
-        )}px ${getRandomInt(min, max)}px`;
-        blob.style.borderBottomRightRadius = `${getRandomInt(
-          min,
-          max
-        )}px ${getRandomInt(min, max)}px`;
+        [
+          "TopLeftRadius",
+          "TopRightRadius",
+          "BottomLeftRadius",
+          "BottomRightRadius",
+        ].forEach((r) => {
+          const a = getRandomInt(min, max);
+          const b = getRandomInt(min, max);
+          blob.style[`border${r}`] = `${a}px ${b}px`;
+        });
       });
-    }, 500);
+    }, 1000);
 
     return () => clearInterval(moveInterval);
   }, []);
 
   useEffect(() => {
-    buildPalette(imageURL);
+    const buildPalette = () => {
+      return createPalette(imageURL, 10, 16).then((r) => {
+        const colorString = (rgbArray) => {
+          return `rgb(${rgbArray[0]},${rgbArray[1]},${rgbArray[2]})`;
+        };
+
+        const bgColor = colorString(r.shift());
+        r = r
+          .sort(() => (Math.random() > 0.5 ? 1 : -1))
+          .slice(0, 4)
+          .map((cArr) => colorString(cArr));
+        return [bgColor, ...r];
+      });
+    };
+
+    buildPalette(imageURL).then((p) => setPalette(p));
   }, [imageURL]);
 
   return (
@@ -71,19 +58,15 @@ const Blobs = ({ imageURL }) => {
             ref={blobsRef}
             style={{ backgroundColor: palette[0] }}
           >
-            <div className="blob" style={{ background: palette[1] }}></div>
-            <div
-              className="blob bottomRight"
-              style={{ background: palette[2] }}
-            ></div>
-            <div
-              className="blob topRight"
-              style={{ background: palette[3] }}
-            ></div>
-            <div
-              className="blob bottomLeft"
-              style={{ background: palette[4] }}
-            ></div>
+            {blobPositions.map((pos, i) => {
+              return (
+                <div
+                  key={i}
+                  className={`blob ${pos}`}
+                  style={{ background: palette[i + 1] }}
+                />
+              );
+            })}
           </div>
         </>
       )}
