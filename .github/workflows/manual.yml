@@ -1,0 +1,23 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+on:
+  workflow_dispatch:
+jobs:
+  deploy_to_site:
+    runs-on: ubuntu-latest
+    steps:
+    - name: build static site
+      run: npm run build
+    - name: enter dir
+      run: cd build
+    - name: init 
+      run: git init
+    - name: add
+      run: git add -A
+    - name: commit
+      run: git commit -m 'deploy'
+    - name: deploy
+      run: git push -f git@github.com:jbukuts/spodify-update master:gh-pages
+    
