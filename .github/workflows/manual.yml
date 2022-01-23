@@ -35,6 +35,7 @@ jobs:
         git init
         git add -A
         git commit -m 'deploy'
+        git remote add origin https://github.com/jbukuts/spodify-update
         git push origin master:gh-pages
       env:
         user_name: 'github-actions[bot]'
