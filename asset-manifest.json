@@ -1,16 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.111b1d1e.css",
-    "main.js": "/static/js/main.8ffc3344.js",
-    "static/js/787.c01daa52.chunk.js": "/static/js/787.c01daa52.chunk.js",
-    "static/media/ChicagoFLF.ttf": "/static/media/ChicagoFLF.cacc40068a3f040ad27a.ttf",
-    "index.html": "/index.html",
-    "main.111b1d1e.css.map": "/static/css/main.111b1d1e.css.map",
-    "main.8ffc3344.js.map": "/static/js/main.8ffc3344.js.map",
-    "787.c01daa52.chunk.js.map": "/static/js/787.c01daa52.chunk.js.map"
+    "main.css": "/spodify-update/static/css/main.60e85318.css",
+    "main.js": "/spodify-update/static/js/main.9ae0eafc.js",
+    "static/js/787.c01daa52.chunk.js": "/spodify-update/static/js/787.c01daa52.chunk.js",
+    "static/media/AppleGaramond.ttf": "/spodify-update/static/media/AppleGaramond.0ae25b7cfb9d8a1385d4.ttf",
+    "static/media/Helvetica.otf": "/spodify-update/static/media/Helvetica.f3b3d51f65ba5c102c0a.otf",
+    "static/media/ChicagoFLF.ttf": "/spodify-update/static/media/ChicagoFLF.cacc40068a3f040ad27a.ttf",
+    "index.html": "/spodify-update/index.html",
+    "main.60e85318.css.map": "/spodify-update/static/css/main.60e85318.css.map",
+    "main.9ae0eafc.js.map": "/spodify-update/static/js/main.9ae0eafc.js.map",
+    "787.c01daa52.chunk.js.map": "/spodify-update/static/js/787.c01daa52.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.111b1d1e.css",
-    "static/js/main.8ffc3344.js"
+    "static/css/main.60e85318.css",
+    "static/js/main.9ae0eafc.js"
   ]
 }
