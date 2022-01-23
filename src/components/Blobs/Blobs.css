@@ -23,6 +23,7 @@
     z-index: -3;
     top: 0;
     left: 0;
+    background-color: rgb(199, 191, 177);
 }
 
 .blob {

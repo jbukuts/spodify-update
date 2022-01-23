@@ -1,9 +1,12 @@
+import './Login.css'
+
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 
 export const PERMISSIONS = [
   "user-read-email",
   "user-library-read",
+  "user-library-modify",
   "streaming",
   "user-read-private",
   "user-modify-playback-state",
@@ -32,7 +35,7 @@ const Login = () => {
       response_type: RESPONSE_TYPE,
       client_id: process.env.REACT_APP_CLIENT_ID,
       scope: scope,
-      redirect_uri: process.env.REACT_APP_REDIRECT_URI,
+      redirect_uri: window.location.href,
       state: state,
     });
 
@@ -41,10 +44,10 @@ const Login = () => {
   };
 
   return (
-    <>
-      <h1>Login</h1>
-      <button onClick={logUserIn}>Start</button>
-    </>
+    <div className='loginContainer'>
+      <h1 className='loginTitle'>Login</h1>
+      <button className='loginButton' onClick={logUserIn}>Start</button>
+    </div>
   );
 };
 

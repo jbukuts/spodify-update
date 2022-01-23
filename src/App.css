@@ -62,3 +62,21 @@
   /*justify-content: flex-end;*/
   transition: .2s left linear;
 }
+
+.controlButton {
+  background-color: transparent;
+  position: absolute;
+  padding: 10px 15px;
+  width: fit-content;
+  height: fit-content;
+  z-index: 111;
+  left: 10px;
+  top: 10px;
+  font-family: 'Garamond';
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.controlButton:hover {
+  background-color: rgba(255, 255, 255, 0.562);
+}

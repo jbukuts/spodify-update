@@ -4,13 +4,15 @@
     position: absolute;
     height: 100%;
     width: 100%;
+    perspective: 5000px;
 }
 
 .miniPlayer {
     width: fit-content;
     height: fit-content;
+    perspective: inherit;
     left: 50%;
-    top: 50%;
+    top: calc(50% - 40px);
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     transition: 1s top linear, .1s transform linear;
@@ -20,82 +22,152 @@
     font-weight: 200;
     font-style: italic;
     color: white;
+    perspective: inherit;
+}
+
+.cdCover {
+    transform-style: preserve-3d;
+    perspective: inherit;
+    margin: 0 auto;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 40px;
+    transition: .15s transform linear;
+}
+
+.cdCover.showing {
+    animation: shakeIt 30s linear infinite;
+}
+
+
+.albumArt, .backCover {
+    background-size: 300px 300px;
+    transform-style: preserve-3d;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: .1s bottom linear, .1s transform ease-in;
+    bottom: 0;
+    z-index: 5;
+    perspective: inherit;
 }
 
 .albumArt {
-    width: 300px;
-    height: 300px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    position: relative;
-    transition: .1s bottom linear;
-    bottom: 0;
-    /** animation: shakeIt 1s infinite alternate; **/
+    transition: .5s border-radius linear;
 }
 
-.albumArt:hover {
+.backCover {
+    position: absolute;
+    background: rgb(36, 36, 36);
+    margin-bottom: 0px;
+    left: 0px;
+    transform: translateZ(-30px);
+    perspective-origin: bottom;
+}
+
+.backCover::before {
+    width: 300px;
+    height: 30px;
+    left: 0;
+    position: absolute;
+    transform: rotateX(-90deg) translateZ(-15px) translateY(-15px);
+    background: rgb(36, 36, 36);
+    content: "";
+
+}
+
+.backCover::after {
+    width: 300px;
+    height: 30px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    transform: rotateX(90deg) translateZ(-15px) translateY(15px);
+    background: rgb(36, 36, 36);
+    content: "";
+
+}
+
+.albumArt::before {
+    width: 30px;
+    height: 300px;
+    position: absolute;
+    left: 0;
+    transform: rotateY(-90deg) translateX(-15px) translateZ(15px);
+    background: rgb(36, 36, 36);
+    content: "";
+}
+
+.albumArt::after {
+    width: 30px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    transform: rotateY(90deg) translateX(15px) translateZ(15px);
+    background: rgb(36, 36, 36);
+    content: "";
+}
+
+.cdCover:hover {
     cursor: pointer;
-    bottom: 10px
+    transform: rotateX(15deg);
 }
 
 @keyframes slideIn {
     0% {
-        top: calc(50% - 75px);
-        pointer-events: none;
-    }
-    35% {
-        top: calc(50% - 400px);
-        pointer-events: none;
-    }
-    70% {
-        top: calc(50% + 50px);
-        pointer-events: none;
-    }
-    100% {
-        top: 50%;
-        pointer-events: all;
-    }
-}
-
-@keyframes slideOut {
-    0% {
-        top: 50%;
+        top: calc(50% - 40px);
         pointer-events: none;
     }
     50% {
-        top: calc(50% - 400px);
+        top: calc(50% - 320px);
         pointer-events: none;
     }
     100% {
-        top: calc(50% - 75px);
-        pointer-events: all;
+        top: calc(50% - 40px);
+        pointer-events: none;
     }
 }
 
 @keyframes shakeIt {
     0% {
-        transform: translate(-50%, -50%) rotateX(-5deg) rotateZ(1deg) translateY(10px);
+        transform: rotateX(-21deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
+    }
+    25% {
+        transform: rotateX(17deg) rotateZ(5deg) translateY(-7px) rotateY(-5deg);
+    }
+    50% {
+        transform: rotateX(-15deg) rotateZ(-5deg) translateY(5px) rotateY(3deg);
+    }
+    75% {
+        transform: rotateX(17deg) rotateZ(2deg) translateY(-10px) rotateY(-4deg);
     }
     100% {
-        transform: translate(-50%, -50%) rotateX(5deg) rotateZ(-1deg) translateY(10px);
+        transform: rotateX(-21deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
     }
 }
 
+@keyframes spinDisk {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+
 .showing {
-    animation-duration: 1s;
-    animation-name: slideIn;
-    animation-fill-mode: forwards;
+    animation: slideIn 1s forwards;
 }
 
 .showingBack {
-    animation-duration: 1s;
-    animation-name: slideOut;
-    animation-fill-mode: forwards;
+    animation: slideIn 1s backwards;
 }
 
 .info {
     opacity: 0;
-    transition: 1.75s opacity ease-in;
+    transition: .5s opacity ease-in;
 }
 
 .show {

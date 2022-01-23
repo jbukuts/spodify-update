@@ -1,11 +1,20 @@
 .contextMenu {
     width: fit-content;
     height: fit-content;
-    background-color: red;
+    background-color: white;
     z-index: 100;
     position:absolute;
     top: 0px;
     left: 0px;
     padding: 4px;
     border: 1px black solid;
+}
+
+.contextItem {
+    transition: .15s all linear;
+}
+
+.contextItem:hover {
+    background-color: black;
+    color: white;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import MainScreen from "../MainScreen/MainScreen";
 
 const LyricsScreen = ({ lyricsBody }) => {
   const [lyrics, setLyrics] = useState([]);
@@ -13,14 +14,16 @@ const LyricsScreen = ({ lyricsBody }) => {
   }, [lyricsBody]);
 
   return (
-    <div style={{ paddingLeft: "3px", paddingRight: "3px" }}>
-      {lyrics.map((line, i) => (
-        <p key={i}>{line}</p>
-      ))}
-      <p className="thanks" style={{ textAlign: "right", fontSize: "10px" }}>
-        Lyrics from MusixMatch
-      </p>
-    </div>
+    <MainScreen>
+      <div style={{ paddingLeft: "3px", paddingRight: "3px" }}>
+        {lyrics.map((line, i) => (
+          <p key={i}>{line}</p>
+        ))}
+        <p className="thanks" style={{ textAlign: "right", fontSize: "10px" }}>
+          Lyrics from MusixMatch
+        </p>
+      </div>
+    </MainScreen>
   );
 };
 

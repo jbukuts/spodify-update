@@ -5,15 +5,15 @@ import {
   performSearch,
 } from "../../common/client-api-calls";
 import SongList from "../SongList/SongList";
+import MainScreen from "../MainScreen/MainScreen";
 
-const SearchScreen = ({ token, addNewScreen, player }) => {
+const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls }) => {
   const [results, setResults] = useState(<></>);
 
   const formRef = useRef(null);
 
   const onSearch = () => {
     const form = formRef.current;
-    console.log(form.value);
     performSearch(token, form.value).then((r) => {
       const {
         albums: { items },
@@ -45,15 +45,20 @@ const SearchScreen = ({ token, addNewScreen, player }) => {
   };
 
   return (
-    <>
+    <MainScreen>
       <div className="searchBar">
         <div className="inputWrapper">
-          <input ref={formRef} placeholder="Enter your search..."></input>
+          <input
+            onFocus={() => toggleKeyControls(false)}
+            onBlur={() => toggleKeyControls(true)}
+            ref={formRef}
+            placeholder="Enter your search..."
+          ></input>
         </div>
         <button onClick={onSearch}>Go</button>
       </div>
       {results}
-    </>
+    </MainScreen>
   );
 };
 

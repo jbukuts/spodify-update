@@ -7,6 +7,7 @@ import {
 } from "../../common/client-api-calls";
 import SongList from "../SongList/SongList";
 import LyricsScreen from "../LyricsScreen/LyricsScreen";
+import MainScreen from "../MainScreen/MainScreen";
 
 const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
   const [trackName, setTrackName] = useState();
@@ -46,7 +47,6 @@ const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
       const {
         item: { artists },
       } = r;
-      console.log(r);
       const artistScreen = await createArtistScreen(artists[0]);
       addScreen({ target: { innerText: artistName.name } }, artistScreen);
     });
@@ -159,21 +159,23 @@ const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
   }, [player]);
 
   return (
-    <div className="nowPlaying">
-      <p onClick={goToLyricsClick}>{trackName}</p>
-      <p onClick={goToAlbumClick}>{albumName}</p>
-      <p onClick={goToArtistClick}>{artistName?.name}</p>
-      <div className="scrubBar" ref={scrubRef}>
-        <div className="scrubLength" ref={scrubLengthRef}>
-          <div className="scrubHandle" ref={scrubHandleRef}></div>
+    <MainScreen>
+      <div className="nowPlaying">
+        <p onClick={goToLyricsClick}>{trackName}</p>
+        <p onClick={goToAlbumClick}>{albumName}</p>
+        <p onClick={goToArtistClick}>{artistName?.name}</p>
+        <div className="scrubBar" ref={scrubRef}>
+          <div className="scrubLength" ref={scrubLengthRef}>
+            <div className="scrubHandle" ref={scrubHandleRef}></div>
+          </div>
+        </div>
+        <div>
+          <p className="playerTime">
+            {secondsToMinutes(elapsed)} -{secondsToMinutes(left)}
+          </p>
         </div>
       </div>
-      <div>
-        <p className="playerTime">
-          {secondsToMinutes(elapsed)} -{secondsToMinutes(left)}
-        </p>
-      </div>
-    </div>
+    </MainScreen>
   );
 };
 

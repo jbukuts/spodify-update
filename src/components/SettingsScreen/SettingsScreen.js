@@ -6,6 +6,7 @@ import {
   toggleShuffleMode,
 } from "../../common/client-api-calls";
 import AboutScreen from "../AboutScreen/AboutScreen";
+import MainScreen from "../MainScreen/MainScreen";
 
 const SettingsScreen = ({
   addNewScreen,
@@ -61,7 +62,6 @@ const SettingsScreen = ({
 
   useEffect(() => {
     getProfileData(token).then((r) => {
-      console.log(r);
       setUserData(r);
     });
 
@@ -73,7 +73,7 @@ const SettingsScreen = ({
   }, [token]);
 
   return (
-    <>
+    <MainScreen>
       <p
         className="menuItem"
         onClick={(e) => addNewScreen(e, <AboutScreen userData={userData} />)}
@@ -92,7 +92,7 @@ const SettingsScreen = ({
       <p className="menuItem justified" onClick={toggleScreenEffect}>
         CRT {screenEff ? "On" : "Off"}
       </p>
-    </>
+    </MainScreen>
   );
 };
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPalette } from "../../common/palette";
-import { getRandomInt } from "../../common/helper";
+import { getRandomInt, calculateAccentColor } from "../../common/helper";
 import "./Blobs.css";
 
-const Blobs = ({ imageURL }) => {
-  const [palette, setPalette] = useState();
+const Blobs = ({ imageURL, setInverseColor }) => {
+  const [palette, setPalette] = useState([]);
   const blobsRef = useRef();
   const blobPositions = ["", "bottomRight", "topRight", "bottomLeft"];
 
@@ -30,13 +30,20 @@ const Blobs = ({ imageURL }) => {
   }, []);
 
   useEffect(() => {
+    if (!imageURL)
+      return;
+
     const buildPalette = () => {
       return createPalette(imageURL, 10, 16).then((r) => {
         const colorString = (rgbArray) => {
           return `rgb(${rgbArray[0]},${rgbArray[1]},${rgbArray[2]})`;
         };
 
-        const bgColor = colorString(r.shift());
+        const bgColorArr = r.shift();
+        const accent = calculateAccentColor(bgColorArr);
+        setInverseColor(accent);
+
+        const bgColor = colorString(bgColorArr);
         r = r
           .sort(() => (Math.random() > 0.5 ? 1 : -1))
           .slice(0, 4)
@@ -46,7 +53,7 @@ const Blobs = ({ imageURL }) => {
     };
 
     buildPalette(imageURL).then((p) => setPalette(p));
-  }, [imageURL]);
+  }, [imageURL, setInverseColor]);
 
   return (
     <>
@@ -56,9 +63,9 @@ const Blobs = ({ imageURL }) => {
           <div
             className="blobs"
             ref={blobsRef}
-            style={{ backgroundColor: palette[0] }}
+            style={palette.length > 0 ? { backgroundColor: palette[0] } : {}}
           >
-            {blobPositions.map((pos, i) => {
+            {palette.length > 1 && blobPositions.map((pos, i) => {
               return (
                 <div
                   key={i}

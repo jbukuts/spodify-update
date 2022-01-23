@@ -8,6 +8,8 @@ import {
   getUsersAlbumsSpotify,
   playSongByURIList,
   getProfileData,
+  removeAlbumFromLibrary,
+  saveAlbumToLibrary,
 } from "./common/client-api-calls";
 import { getRandomInt } from "./common/helper";
 import createPlayer from "./common/player";
@@ -17,6 +19,8 @@ import SettingsScreen from "./components/SettingsScreen/SettingsScreen";
 import MiniPlayer from "./components/MiniPlayer/MiniPlayer";
 import ArtistScreen from "./components/ArtistScreen/ArtistScreen";
 import SearchScreen from "./components/SearchScreen/SearchScreen";
+import ContextMenu from "./components/ContextMenu/ContextMenu";
+import ControlsModal from "./components/ControlsModal/ControlsModal";
 
 const App = () => {
   const [screens, setScreenState] = useState([]);
@@ -29,13 +33,22 @@ const App = () => {
   const [keyEventsOn, setKeyEventsOn] = useState(true);
 
   // song data
-  const [albums, setAlbums] = useState([]);
+  const albums = useRef([]);
   const [songs, setSongs] = useState([]);
 
   // local states
   const [showClock, setShowClock] = useState(false);
   const [crtMode, setCrtMode] = useState(false);
   const [showScreen, setShowScreen] = useState(true);
+
+  const [showContextMenu, setShowContextMenu] = useState(false); 
+  const [contextMenu, setContextMenu] = useState(<></>);
+  const [menuXPos, setMenuXPos] = useState(0);
+  const [menuYPos, setMenuYPos] = useState(0);
+
+  const [showControls, setShowControls] = useState(false);
+
+  const [accentColor, setAccentColor] = useState('#000');
 
   const screenRef = useRef();
   const mainRef = useRef();
@@ -54,7 +67,7 @@ const App = () => {
     [menuTitle, screens]
   );
 
-  const addNewScreen = useCallback((e, screenToAdd, addSearchBar = false) => {
+  const addNewScreen = useCallback((e, screenToAdd) => {
     const newTitle = e.target.innerText;
     setMenuTitle((oldTitles) => {
       const isNowPlaying = oldTitles.findIndex((t) => t === "Now Playing");
@@ -65,110 +78,136 @@ const App = () => {
     });
 
     setScreenState((oldScreens) => {
-      const isNowPlaying = oldScreens.findIndex(
-        (t) => t.screen.type === NowPlaying
-      );
-      if (screenToAdd.type === NowPlaying && isNowPlaying > -1) {
-        return oldScreens.slice(0, isNowPlaying + 1);
-      }
-      //return [...oldScreens, screenToAdd];
-      return [...oldScreens, { screen: screenToAdd, searchBar: addSearchBar }];
+      return [...oldScreens, screenToAdd];
     });
   }, []);
 
+  const handleContextMenu = (innerMenu, x, y) => {
+    setShowContextMenu(true);
+    setContextMenu(innerMenu);
+    setMenuXPos(x);
+    setMenuYPos(y);
+  }
+
+  const removeAlbum = (album) => {
+    removeAlbumFromLibrary(token, album.id).then(r => {
+      const albumToRemove = albums.current.findIndex((a) => a.id === album.id);
+
+      // setAlbums(old => old.slice(0,albumToRemove).concat(old.slice(albumToRemove+1)));
+      albums.current = albums.current.slice(0,albumToRemove).concat(albums.current.slice(albumToRemove+1));
+    });
+  }
+
+  const addAlbum = (album) => {
+    saveAlbumToLibrary(token, album.id).then(r => {
+      albums.current = [...albums.current, album].sort((a, b) => a.name.localeCompare(b.name));
+      //setAlbums(old => [...old, album].sort((a, b) => a.name.localeCompare(b.name)));
+    });
+  }
+
   const createArtistCallback = (artist) => {
-    console.log(artist);
-    const filteredAlbums = albums.filter((a) => a.artists[0].id === artist.id);
+    const filteredAlbums = albums.current.filter((a) => a.artists[0].id === artist.id);
     return (
       <ArtistScreen
+        addAlbum={addAlbum}
+        removeAlbum={removeAlbum}
+        handleContextMenu={handleContextMenu}
         token={token}
         artist={artist}
         addNewScreen={addNewScreen}
         player={player}
-        yourAlbums={filteredAlbums}
+        propAlbums={filteredAlbums}
       />
     );
   };
 
   const createFullAlbumList = () => {
-    return albums.map((a, i) => {
-      const { name } = a;
-      return (
-        <p
-          key={i}
-          className="menuItem isMenu"
-          onClick={() =>
-            addNewScreen(
-              { target: { innerText: name } },
-              <SongList album={a} player={player} token={token} />
-            )
-          }
-        >
-          {name}
-        </p>
-      );
-    });
+    return (
+      <MainScreen showSearchBar toggleKeyControls={toggleKeyControls}>
+        {albums.current.map((a, i) => {
+          const { name } = a;
+          return (
+            <p
+              key={i}
+              className="menuItem isMenu"
+              onClick={() =>
+                addNewScreen(
+                  { target: { innerText: name } },
+                  <SongList album={a} player={player} token={token} />
+                )
+              }
+            >
+              {name}
+            </p>
+          );
+        })}
+      </MainScreen>
+    );
   };
 
   const createFullArtistList = () => {
-    const allArtists = albums
+    const allArtists = albums.current
       .map((a) => a.artists[0])
       .filter((a, i, self) => {
         return i === self.findIndex((t) => t.id === a.id);
       })
       .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-    console.log(allArtists);
-
-    return allArtists.map((a, idx) => (
-      <p
-        className="menuItem isMenu"
-        key={idx}
-        onClick={(e) => addNewScreen(e, createArtistCallback(a))}
-      >
-        {a.name}
-      </p>
-    ));
+    return (
+      <MainScreen showSearchBar={true} toggleKeyControls={toggleKeyControls}>
+        {allArtists.map((a, idx) => (
+          <p
+            className="menuItem isMenu"
+            key={idx}
+            onClick={(e) => addNewScreen(e, createArtistCallback(a))}
+          >
+            {a.name}
+          </p>
+        ))}
+      </MainScreen>
+    );
   };
 
   const createFullSongList = () => {
     const playSongs = (i) => {
-      console.log(i);
       const amount = 2;
       const start = i - amount < 0 ? 0 : i - amount;
       const songsToPlay = songs.slice(start, i + amount + 1).map((s) => s.uri);
-      console.log(songsToPlay);
       playSongByURIList(token, songsToPlay, i - amount < 0 ? 0 : amount);
     };
 
-    return songs.map((s, i) => {
-      const { name } = s;
-      return (
-        <p key={i} className="menuItem" onClick={() => playSongs(i)}>
-          {name}
-        </p>
-      );
-    });
+    return (
+      <MainScreen showSearchBar toggleKeyControls={toggleKeyControls}>
+        {songs.map((s, i) => {
+          const { name } = s;
+          return (
+            <p key={i} className="menuItem" onClick={() => playSongs(i)}>
+              {name}
+            </p>
+          );
+        })}
+      </MainScreen>
+    );
   };
 
   const createMusicScreen = () => {
     return (
-      <>
+      <MainScreen showSearchBar={false}>
         <p
           className="menuItem isMenu"
-          onClick={(e) => addNewScreen(e, createFullAlbumList, true)}
+          onClick={(e) => addNewScreen(e, createFullAlbumList(), true)}
         >
           Albums
         </p>
         <p
           className="menuItem isMenu"
-          onClick={(e) => addNewScreen(e, createFullArtistList, true)}
+          onClick={(e) => addNewScreen(e, createFullArtistList(), true)}
         >
           Artists
         </p>
         <p
           className="menuItem isMenu"
-          onClick={(e) => addNewScreen(e, createFullSongList, true)}
+          onClick={(e) => addNewScreen(e, createFullSongList(), true)}
         >
           Songs
         </p>
@@ -178,6 +217,7 @@ const App = () => {
             addNewScreen(
               e,
               <SearchScreen
+                toggleKeyControls={toggleKeyControls}
                 token={token}
                 player={player}
                 addNewScreen={addNewScreen}
@@ -187,7 +227,7 @@ const App = () => {
         >
           Search
         </p>
-      </>
+      </MainScreen>
     );
   };
 
@@ -212,8 +252,8 @@ const App = () => {
 
   // shift on screen update
   useEffect(() => {
-    screenRef.current.style.left = `calc(-${screens.length}00%)`;
-  }, [screens]);
+    screenRef.current.style.left = `calc(-${menuTitle.length - 1}00%)`;
+  }, [menuTitle]);
 
   // after the token build the player
   useEffect(() => {
@@ -222,8 +262,6 @@ const App = () => {
         setPlayer(p);
       });
     }
-
-    return () => player && player.disconnect();
   }, [token]);
 
   // after play get the albums
@@ -245,7 +283,8 @@ const App = () => {
 
       // get the album data
       getUsersAlbumsSpotify(token).then((allAlbums) => {
-        setAlbums(allAlbums);
+        // setAlbums(allAlbums);
+        albums.current = allAlbums;
         const allSongs = allAlbums
           .reduce((acc, curr) => [...acc, ...curr.tracks.items], [])
           .sort((a, b) =>
@@ -256,6 +295,8 @@ const App = () => {
         setFullyLoaded(true);
       });
     }
+
+    return () => player && player.disconnect();
   }, [player, token]);
 
   // create listeners for key events
@@ -320,6 +361,10 @@ const App = () => {
         }
       });
     }
+
+    const handleContext = (e) => e.preventDefault();
+    document.addEventListener('contextmenu', handleContext);
+    return () => document.removeEventListener('contextmenu', handleContext);
   }, []);
 
   return (
@@ -339,7 +384,7 @@ const App = () => {
               <>
                 <p
                   className="menuItem isMenu"
-                  onClick={(e) => addNewScreen(e, createMusicScreen)}
+                  onClick={(e) => addNewScreen(e, createMusicScreen())}
                 >
                   Music
                 </p>
@@ -384,24 +429,20 @@ const App = () => {
               </>
             )}
           </MainScreen>
-          {fullyLoaded &&
-            screens.map(({ screen, searchBar }, idx) => {
-              return (
-                <MainScreen
-                  key={idx}
-                  showSearchBar={searchBar}
-                  toggleKeyControls={toggleKeyControls}
-                >
-                  {screen}
-                </MainScreen>
-              );
-            })}
+          {fullyLoaded && screens}
         </div>
       </div>
       {albumArt && (
-        <MiniPlayer playerState={playState} imageURL={albumArt} setShowScreen={setShowScreen} />
+        <MiniPlayer
+          playerState={playState}
+          imageURL={albumArt}
+          setShowScreen={setShowScreen}
+        />
       )}
-      {albumArt && <Blobs imageURL={albumArt}></Blobs>}
+      <button style={{color: accentColor, borderColor: accentColor}} className='controlButton' onClick={() => setShowControls((old) => !old)}>Controls</button>
+      {showControls && <ControlsModal isOpen={showControls} onClose={() => setShowControls(false)}></ControlsModal>}
+      <Blobs imageURL={albumArt} setInverseColor={setAccentColor}></Blobs>
+      {showContextMenu && <ContextMenu setShowMenu={setShowContextMenu} showMenu={showContextMenu} innerMenu={contextMenu} xPos={menuXPos} yPos={menuYPos} />}
     </div>
   );
 };

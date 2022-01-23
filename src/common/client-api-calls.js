@@ -50,6 +50,42 @@ export async function getUsersAlbumsSpotify(accessToken) {
   return fullAlbumList;
 }
 
+export async function removeAlbumFromLibrary(accessToken, albumId) {
+  try {
+    // play the song
+    return await fetch(`${baseAPIURL}/me/albums`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify([albumId])
+    });
+  } catch (e) {
+    console.log("There was an error retrieving the album");
+  }
+  return null;
+}
+
+export async function saveAlbumToLibrary(accessToken, albumId) {
+  try {
+    // play the song
+    return await fetch(`${baseAPIURL}/me/albums`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify([albumId])
+    });
+  } catch (e) {
+    console.log("There was an error retrieving the album");
+  }
+  return null;
+}
+
 export async function playSongByAlbumURI(
   accessToken,
   albumURI,

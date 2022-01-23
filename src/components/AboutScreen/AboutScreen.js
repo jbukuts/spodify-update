@@ -1,5 +1,6 @@
 import "./AboutScreen.css";
 import { useEffect, useState } from "react";
+import MainScreen from "../MainScreen/MainScreen";
 
 const AboutScreen = ({ userData }) => {
   const [displayName, setDisplayName] = useState();
@@ -10,9 +11,9 @@ const AboutScreen = ({ userData }) => {
   }, [userData]);
 
   return (
-    <>
+    <MainScreen>
       <p className="aboutTitle">{displayName}'s iPod</p>
-    </>
+    </MainScreen>
   );
 };
 
