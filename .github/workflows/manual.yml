@@ -35,7 +35,7 @@ jobs:
         git init
         git add -A
         git commit -m 'deploy'
-        git push origin gh-pages
+        git push ${github_token}@github.com/${repository} master:gh-pages
       env:
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
