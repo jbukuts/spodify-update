@@ -7,8 +7,18 @@ import {
 } from "../../common/client-api-calls";
 import MainScreen from "../MainScreen/MainScreen";
 
-const ArtistScreen = ({ artist, propAlbums, player, addNewScreen, token, handleContextMenu, removeAlbum, addAlbum }) => {
+const ArtistScreen = ({
+  artist,
+  propAlbums,
+  player,
+  addNewScreen,
+  token,
+  handleContextMenu,
+  removeAlbum,
+  addAlbum,
+}) => {
   const [otherAlbums, setOtherAlbums] = useState([]);
+  const [otherSingles, setOtherSingles] = useState([]);
   const [yourAlbums, setYourAlbums] = useState(propAlbums);
 
   useEffect(() => {
@@ -28,8 +38,13 @@ const ArtistScreen = ({ artist, propAlbums, player, addNewScreen, token, handleC
       if (albumsOfInterest.length === 0) return;
 
       getMultipleAlbums(token, albumsOfInterest).then((r) => {
+        console.log(r);
         const { albums } = r;
-        if (albums) setOtherAlbums(albums);
+        if (albums) {
+          const sorted = albums.sort((a, b) => a.name.localeCompare(b.name));
+          setOtherAlbums(sorted.filter((a) => a["album_type"] === "album"));
+          setOtherSingles(sorted.filter((a) => a["album_type"] === "single"));
+        }
       });
     });
   }, [token, artist, yourAlbums]);
@@ -41,13 +56,19 @@ const ArtistScreen = ({ artist, propAlbums, player, addNewScreen, token, handleC
 
     const removeTheAlbum = (album) => {
       //removeAlbum(album)
-      setYourAlbums(old => {
-        return old.slice(0,index).concat(old.slice(index+1));
+      setYourAlbums((old) => {
+        return old.slice(0, index).concat(old.slice(index + 1));
       });
       removeAlbum(album);
-    }
+    };
 
-    handleContextMenu(<p className='contextItem' onClick={() => removeTheAlbum(album)}>Remove From Library</p>, xPos, yPos);
+    handleContextMenu(
+      <p className="contextItem" onClick={() => removeTheAlbum(album)}>
+        Remove From Library
+      </p>,
+      xPos,
+      yPos
+    );
   };
 
   const addContextMenu = (e, album, index) => {
@@ -56,58 +77,67 @@ const ArtistScreen = ({ artist, propAlbums, player, addNewScreen, token, handleC
     const yPos = e.pageY + "px";
 
     const addTheAlbum = (album) => {
-      console.log('splceuisf');
-      setOtherAlbums(old => {
-        return old.slice(0,index).concat(old.slice(index+1));
+      setOtherAlbums((old) => {
+        return old.slice(0, index).concat(old.slice(index + 1));
       });
-      setYourAlbums(old => [...old, album]);
+      setYourAlbums((old) =>
+        [...old, album].sort((a, b) => a.name.localeCompare(b.name))
+      );
       addAlbum(album);
-    }
+    };
 
-    handleContextMenu(<p className='contextItem' onClick={() => addTheAlbum(album)}>Add to Library</p>, xPos, yPos);
+    handleContextMenu(
+      <p className="contextItem" onClick={() => addTheAlbum(album)}>
+        Add to Library
+      </p>,
+      xPos,
+      yPos
+    );
+  };
+
+  const OtherAlbumsList = ({ albums, handleContextMenu }) => {
+    return (
+      <>
+        {albums.map((a, idx) => (
+          <p
+            onContextMenu={(e) => handleContextMenu(e, a, idx)}
+            className="menuItem isMenu"
+            key={idx}
+            onClick={(e) =>
+              addNewScreen(
+                e,
+                <SongList album={a} player={player} token={token} />
+              )
+            }
+          >
+            {a.name}
+          </p>
+        ))}
+      </>
+    );
   };
 
   return (
     <MainScreen>
       <p className="subHeader">IN YOUR LIBRARY</p>
-      {yourAlbums.map((a, idx) => (
-        <p
-          onContextMenu={(e) => removeContextMenu(e, a, idx)}
-          className="menuItem isMenu"
-          key={idx}
-          onClick={(e) =>
-            addNewScreen(
-              e,
-              <SongList album={a} player={player} token={token} />
-            )
-          }
-        >
-          {a.name}
-        </p>
-      ))}
-      <p className="subHeader" style={{ marginTop: "25px" }}>
-        OTHER ALBUMS
-      </p>
-      {otherAlbums && otherAlbums.length === 0 && (
-        <p className="subHeader" style={{ opacity: 0.5 }}>
-          YOU HAVE THEM ALL :)
-        </p>
-      )}
-      {otherAlbums.map((a, idx) => (
-        <p
-          onContextMenu={(e) => addContextMenu(e, a, idx)}
-          className="menuItem isMenu"
-          key={idx}
-          onClick={(e) =>
-            addNewScreen(
-              e,
-              <SongList album={a} player={player} token={token} />
-            )
-          }
-        >
-          {a.name}
-        </p>
-      ))}
+      <OtherAlbumsList
+        handleContextMenu={removeContextMenu}
+        albums={yourAlbums}
+      />
+      {otherAlbums && otherAlbums.length > 0 && 
+        <p className="subHeader">OTHER ALBUMS</p>
+      }
+      <OtherAlbumsList
+        handleContextMenu={addContextMenu}
+        albums={otherAlbums}
+      />
+      {otherSingles && otherSingles.length > 0 && 
+        <p className="subHeader">OTHER SINGLES</p>
+      }
+      <OtherAlbumsList
+        handleContextMenu={addContextMenu}
+        albums={otherSingles}
+      />
     </MainScreen>
   );
 };

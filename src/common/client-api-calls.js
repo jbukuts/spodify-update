@@ -60,7 +60,7 @@ export async function removeAlbumFromLibrary(accessToken, albumId) {
         Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify([albumId])
+      body: JSON.stringify([albumId]),
     });
   } catch (e) {
     console.log("There was an error retrieving the album");
@@ -78,7 +78,7 @@ export async function saveAlbumToLibrary(accessToken, albumId) {
         Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify([albumId])
+      body: JSON.stringify([albumId]),
     });
   } catch (e) {
     console.log("There was an error retrieving the album");
@@ -273,7 +273,7 @@ export function getSongLyrics(songName, artistName) {
 export function getArtistAlbumsById(accessToken, artistId, limit = 5) {
   try {
     return fetch(
-      `${baseAPIURL}/artists/${artistId}/albums?include_groups=album&limit=${limit}`,
+      `${baseAPIURL}/artists/${artistId}/albums?include_groups=album,single&limit=${limit}`,
       {
         headers: {
           ...apiHeaders,

@@ -39,7 +39,6 @@
     animation: shakeIt 30s linear infinite;
 }
 
-
 .albumArt, .backCover {
     background-size: 300px 300px;
     transform-style: preserve-3d;
@@ -51,6 +50,7 @@
     bottom: 0;
     z-index: 5;
     perspective: inherit;
+    outline: 1px solid transparent;
 }
 
 .albumArt {
@@ -74,7 +74,7 @@
     transform: rotateX(-90deg) translateZ(-15px) translateY(-15px);
     background: rgb(36, 36, 36);
     content: "";
-
+    outline: 1px solid transparent;
 }
 
 .backCover::after {
@@ -86,7 +86,7 @@
     transform: rotateX(90deg) translateZ(-15px) translateY(15px);
     background: rgb(36, 36, 36);
     content: "";
-
+    outline: 1px solid transparent;
 }
 
 .albumArt::before {
@@ -97,6 +97,7 @@
     transform: rotateY(-90deg) translateX(-15px) translateZ(15px);
     background: rgb(36, 36, 36);
     content: "";
+    outline: 1px solid transparent;
 }
 
 .albumArt::after {
@@ -107,6 +108,7 @@
     transform: rotateY(90deg) translateX(15px) translateZ(15px);
     background: rgb(36, 36, 36);
     content: "";
+    outline: 1px solid transparent;
 }
 
 .cdCover:hover {
@@ -131,31 +133,21 @@
 
 @keyframes shakeIt {
     0% {
-        transform: rotateX(-21deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
+        transform: rotateX(-11deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
     }
     25% {
-        transform: rotateX(17deg) rotateZ(5deg) translateY(-7px) rotateY(-5deg);
+        transform: rotateX(7deg) rotateZ(5deg) translateY(-7px) rotateY(-5deg);
     }
     50% {
-        transform: rotateX(-15deg) rotateZ(-5deg) translateY(5px) rotateY(3deg);
+        transform: rotateX(-10deg) rotateZ(-5deg) translateY(5px) rotateY(3deg);
     }
     75% {
-        transform: rotateX(17deg) rotateZ(2deg) translateY(-10px) rotateY(-4deg);
+        transform: rotateX(8deg) rotateZ(2deg) translateY(-10px) rotateY(-4deg);
     }
     100% {
-        transform: rotateX(-21deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
+        transform: rotateX(-14deg) rotateZ(-7deg) translateY(4px) rotateY(0deg);
     }
 }
-
-@keyframes spinDisk {
-    0% {
-        transform: rotateZ(0deg);
-    }
-    100% {
-        transform: rotateZ(360deg);
-    }
-}
-
 
 .showing {
     animation: slideIn 1s forwards;

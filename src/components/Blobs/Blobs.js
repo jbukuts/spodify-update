@@ -30,8 +30,7 @@ const Blobs = ({ imageURL, setInverseColor }) => {
   }, []);
 
   useEffect(() => {
-    if (!imageURL)
-      return;
+    if (!imageURL) return;
 
     const buildPalette = () => {
       return createPalette(imageURL, 10, 16).then((r) => {
@@ -65,15 +64,16 @@ const Blobs = ({ imageURL, setInverseColor }) => {
             ref={blobsRef}
             style={palette.length > 0 ? { backgroundColor: palette[0] } : {}}
           >
-            {palette.length > 1 && blobPositions.map((pos, i) => {
-              return (
-                <div
-                  key={i}
-                  className={`blob ${pos}`}
-                  style={{ background: palette[i + 1] }}
-                />
-              );
-            })}
+            {palette.length > 1 &&
+              blobPositions.map((pos, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={`blob ${pos}`}
+                    style={{ background: palette[i + 1] }}
+                  />
+                );
+              })}
           </div>
         </>
       )}

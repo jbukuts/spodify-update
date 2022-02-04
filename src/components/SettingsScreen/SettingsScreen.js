@@ -15,6 +15,7 @@ const SettingsScreen = ({
   setShowClock,
   screenEffect,
   setScreenEffect,
+  logout
 }) => {
   const [userData, setUserData] = useState();
   const [repeatMode, setRepeatMode] = useState();
@@ -75,7 +76,7 @@ const SettingsScreen = ({
   return (
     <MainScreen>
       <p
-        className="menuItem"
+        className="menuItem isMenu"
         onClick={(e) => addNewScreen(e, <AboutScreen userData={userData} />)}
       >
         About
@@ -91,6 +92,9 @@ const SettingsScreen = ({
       </p>
       <p className="menuItem justified" onClick={toggleScreenEffect}>
         CRT {screenEff ? "On" : "Off"}
+      </p>
+      <p className="menuItem danger" onClick={logout}>
+        Logout
       </p>
     </MainScreen>
   );

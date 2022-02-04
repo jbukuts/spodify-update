@@ -83,3 +83,14 @@ input {
 input:focus {
     outline: none;
 }
+
+.danger {
+    transition: all .1s linear;
+    color: rgb(170, 25, 25);
+}
+
+.danger:hover {
+    background-color: rgb(170, 25, 25);
+    color: white;
+}
+

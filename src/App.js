@@ -41,14 +41,14 @@ const App = () => {
   const [crtMode, setCrtMode] = useState(false);
   const [showScreen, setShowScreen] = useState(true);
 
-  const [showContextMenu, setShowContextMenu] = useState(false); 
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenu, setContextMenu] = useState(<></>);
   const [menuXPos, setMenuXPos] = useState(0);
   const [menuYPos, setMenuYPos] = useState(0);
 
   const [showControls, setShowControls] = useState(false);
 
-  const [accentColor, setAccentColor] = useState('#000');
+  const [accentColor, setAccentColor] = useState("#000");
 
   const screenRef = useRef();
   const mainRef = useRef();
@@ -87,26 +87,32 @@ const App = () => {
     setContextMenu(innerMenu);
     setMenuXPos(x);
     setMenuYPos(y);
-  }
+  };
 
   const removeAlbum = (album) => {
-    removeAlbumFromLibrary(token, album.id).then(r => {
+    removeAlbumFromLibrary(token, album.id).then((r) => {
       const albumToRemove = albums.current.findIndex((a) => a.id === album.id);
 
       // setAlbums(old => old.slice(0,albumToRemove).concat(old.slice(albumToRemove+1)));
-      albums.current = albums.current.slice(0,albumToRemove).concat(albums.current.slice(albumToRemove+1));
+      albums.current = albums.current
+        .slice(0, albumToRemove)
+        .concat(albums.current.slice(albumToRemove + 1));
     });
-  }
+  };
 
   const addAlbum = (album) => {
-    saveAlbumToLibrary(token, album.id).then(r => {
-      albums.current = [...albums.current, album].sort((a, b) => a.name.localeCompare(b.name));
+    saveAlbumToLibrary(token, album.id).then((r) => {
+      albums.current = [...albums.current, album].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       //setAlbums(old => [...old, album].sort((a, b) => a.name.localeCompare(b.name)));
     });
-  }
+  };
 
   const createArtistCallback = (artist) => {
-    const filteredAlbums = albums.current.filter((a) => a.artists[0].id === artist.id);
+    const filteredAlbums = albums.current.filter(
+      (a) => a.artists[0].id === artist.id
+    );
     return (
       <ArtistScreen
         addAlbum={addAlbum}
@@ -250,6 +256,11 @@ const App = () => {
     playSongByURIList(token, shuffledSongs);
   };
 
+  const logUserOut = () => {
+    localStorage.clear();
+    window.location.reload();
+  }
+
   // shift on screen update
   useEffect(() => {
     screenRef.current.style.left = `calc(-${menuTitle.length - 1}00%)`;
@@ -363,8 +374,8 @@ const App = () => {
     }
 
     const handleContext = (e) => e.preventDefault();
-    document.addEventListener('contextmenu', handleContext);
-    return () => document.removeEventListener('contextmenu', handleContext);
+    document.addEventListener("contextmenu", handleContext);
+    return () => document.removeEventListener("contextmenu", handleContext);
   }, []);
 
   return (
@@ -401,6 +412,7 @@ const App = () => {
                         setShowClock={setShowClock}
                         screenEffect={crtMode}
                         setScreenEffect={setCrtMode}
+                        logout={logUserOut}
                       />
                     )
                   }
@@ -439,10 +451,31 @@ const App = () => {
           setShowScreen={setShowScreen}
         />
       )}
-      <button style={{color: accentColor, borderColor: accentColor}} className='controlButton' onClick={() => setShowControls((old) => !old)}>Controls</button>
-      {showControls && <ControlsModal isOpen={showControls} onClose={() => setShowControls(false)}></ControlsModal>}
+      {showScreen && (
+        <button
+          style={{ color: accentColor, borderColor: accentColor }}
+          className="controlButton"
+          onClick={() => setShowControls((old) => !old)}
+        >
+          Controls
+        </button>
+      )}
+      {showControls && (
+        <ControlsModal
+          isOpen={showControls}
+          onClose={() => setShowControls(false)}
+        ></ControlsModal>
+      )}
       <Blobs imageURL={albumArt} setInverseColor={setAccentColor}></Blobs>
-      {showContextMenu && <ContextMenu setShowMenu={setShowContextMenu} showMenu={showContextMenu} innerMenu={contextMenu} xPos={menuXPos} yPos={menuYPos} />}
+      {showContextMenu && (
+        <ContextMenu
+          setShowMenu={setShowContextMenu}
+          showMenu={showContextMenu}
+          innerMenu={contextMenu}
+          xPos={menuXPos}
+          yPos={menuYPos}
+        />
+      )}
     </div>
   );
 };

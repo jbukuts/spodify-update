@@ -1,4 +1,4 @@
-import './Login.css'
+import "./Login.css";
 
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
@@ -44,9 +44,11 @@ const Login = () => {
   };
 
   return (
-    <div className='loginContainer'>
-      <h1 className='loginTitle'>Login</h1>
-      <button className='loginButton' onClick={logUserIn}>Start</button>
+    <div className="loginContainer">
+      <h1 className="loginTitle">Login</h1>
+      <button className="loginButton" onClick={logUserIn}>
+        Start
+      </button>
     </div>
   );
 };
