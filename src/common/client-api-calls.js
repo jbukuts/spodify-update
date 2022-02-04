@@ -219,13 +219,14 @@ export function toggleShuffleMode(accessToken, mode) {
   }
 }
 
+// TODO: Move to my own personal API
 export function getSongLyrics(songName, artistName) {
   const base = "https://api.musixmatch.com/ws/1.1";
   const corsAnywhere = "https://cors-anywhere.herokuapp.com/";
   const key = "019e8ab04d8e50cb6c95126cbdc81922";
 
   return fetch(
-    `${corsAnywhere}${base}/track.search?q_track=${songName}&q_artist=${artistName}&apikey=${key}&f_has_lyrics=true`,
+    `${base}/track.search?q_track=${songName}&q_artist=${artistName}&apikey=${key}&f_has_lyrics=true`,
     {
       headers: {
         ...apiHeaders,

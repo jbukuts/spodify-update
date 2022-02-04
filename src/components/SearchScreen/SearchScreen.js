@@ -7,10 +7,24 @@ import {
 import SongList from "../SongList/SongList";
 import MainScreen from "../MainScreen/MainScreen";
 
-const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls }) => {
+const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls, handleContextMenu }) => {
   const [results, setResults] = useState(<></>);
 
   const formRef = useRef(null);
+
+  const addContextMenu = (e, album, index) => {
+    e.preventDefault();
+    const xPos = e.pageX + "px";
+    const yPos = e.pageY + "px";
+
+    handleContextMenu(
+      <p className="contextItem">
+        Add to Library
+      </p>,
+      xPos,
+      yPos
+    );
+  };
 
   const onSearch = () => {
     const form = formRef.current;
@@ -34,6 +48,7 @@ const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls }) => {
                 <SongList album={a} player={player} token={token} />
               )
             }
+            onContextMenu={(e) => addContextMenu(e, a, i)}
           >
             {a.name}
           </p>

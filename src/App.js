@@ -223,6 +223,7 @@ const App = () => {
             addNewScreen(
               e,
               <SearchScreen
+                handleContextMenu={handleContextMenu}
                 toggleKeyControls={toggleKeyControls}
                 token={token}
                 player={player}
@@ -413,6 +414,7 @@ const App = () => {
                         screenEffect={crtMode}
                         setScreenEffect={setCrtMode}
                         logout={logUserOut}
+                        albumAmount={albums.current.length}
                       />
                     )
                   }
@@ -449,6 +451,7 @@ const App = () => {
           playerState={playState}
           imageURL={albumArt}
           setShowScreen={setShowScreen}
+          accentColor={accentColor}
         />
       )}
       {showScreen && (

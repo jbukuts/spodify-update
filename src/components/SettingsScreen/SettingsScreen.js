@@ -15,6 +15,7 @@ const SettingsScreen = ({
   setShowClock,
   screenEffect,
   setScreenEffect,
+  albumAmount,
   logout
 }) => {
   const [userData, setUserData] = useState();
@@ -77,7 +78,7 @@ const SettingsScreen = ({
     <MainScreen>
       <p
         className="menuItem isMenu"
-        onClick={(e) => addNewScreen(e, <AboutScreen userData={userData} />)}
+        onClick={(e) => addNewScreen(e, <AboutScreen userData={userData} albumAmount={albumAmount} songAmount={101} artistAmount={102}/>)}
       >
         About
       </p>

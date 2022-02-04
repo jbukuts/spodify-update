@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./MiniPlayer.css";
 
-const MiniPlayer = ({ imageURL, setShowScreen, playerState }) => {
+const MiniPlayer = ({ imageURL, setShowScreen, playerState, accentColor }) => {
   const [isShowing, setIsShowing] = useState(false);
   const [songName, setSongName] = useState();
   const [artistName, setArtistName] = useState();
@@ -42,20 +42,15 @@ const MiniPlayer = ({ imageURL, setShowScreen, playerState }) => {
       <div
         className={`miniPlayer ${showClass}`}
         onAnimationEnd={() => setShowClass("")}
+        onClick={() => setIsShowing(!isShowing)}
       >
-        <div
-          className={`cdCover${isShowing ? " showing" : ""}`}
-          onClick={() => setIsShowing(!isShowing)}
-        >
           <div
             ref={imgRef}
-            className={`albumArt`}
+            className='albumArt'
             style={{ borderRadius: !isShowing ? "0px" : "0px" }}
+            
           />
-          <div className="backCover" />
-        </div>
-
-        <div className={`info${isShowing ? " show" : ""}`}>
+        <div className='info' style={{opacity: isShowing ? '1' : '0', color: accentColor}}>
           <p>{songName}</p>
           <p>{artistName}</p>
         </div>
