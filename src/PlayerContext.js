@@ -1,4 +1,4 @@
-import React, { Context } from 'react';
+import React from 'react';
 
 const PlayerContext = React.createContext([
     {},
