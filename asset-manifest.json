@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.c1582d6a.css",
-    "main.js": "/static/js/main.b628aaa9.js",
-    "static/js/787.c01daa52.chunk.js": "/static/js/787.c01daa52.chunk.js",
-    "service-worker.js": "/service-worker.js",
-    "static/media/AppleGaramond.ttf": "/static/media/AppleGaramond.0ae25b7cfb9d8a1385d4.ttf",
-    "static/media/Helvetica.otf": "/static/media/Helvetica.f3b3d51f65ba5c102c0a.otf",
-    "static/media/ChicagoFLF.ttf": "/static/media/ChicagoFLF.cacc40068a3f040ad27a.ttf",
-    "index.html": "/index.html",
-    "main.c1582d6a.css.map": "/static/css/main.c1582d6a.css.map",
-    "main.b628aaa9.js.map": "/static/js/main.b628aaa9.js.map",
-    "787.c01daa52.chunk.js.map": "/static/js/787.c01daa52.chunk.js.map"
+    "main.css": "/spodify-update/static/css/main.57537439.css",
+    "main.js": "/spodify-update/static/js/main.cb342752.js",
+    "static/js/787.c01daa52.chunk.js": "/spodify-update/static/js/787.c01daa52.chunk.js",
+    "service-worker.js": "/spodify-update/service-worker.js",
+    "static/media/AppleGaramond.ttf": "/spodify-update/static/media/AppleGaramond.0ae25b7cfb9d8a1385d4.ttf",
+    "static/media/Helvetica.otf": "/spodify-update/static/media/Helvetica.f3b3d51f65ba5c102c0a.otf",
+    "static/media/ChicagoFLF.ttf": "/spodify-update/static/media/ChicagoFLF.cacc40068a3f040ad27a.ttf",
+    "index.html": "/spodify-update/index.html",
+    "main.57537439.css.map": "/spodify-update/static/css/main.57537439.css.map",
+    "main.cb342752.js.map": "/spodify-update/static/js/main.cb342752.js.map",
+    "787.c01daa52.chunk.js.map": "/spodify-update/static/js/787.c01daa52.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c1582d6a.css",
-    "static/js/main.b628aaa9.js"
+    "static/css/main.57537439.css",
+    "static/js/main.cb342752.js"
   ]
 }
