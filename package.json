@@ -1,6 +1,7 @@
 {
   "name": "new-ipod",
   "version": "0.1.0",
+  "homepage": "https://jbukuts.com/spodify-update",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
