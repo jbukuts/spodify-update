@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./NowPlaying.css";
 import {
   getCurrentlyPlaying,
@@ -8,12 +8,13 @@ import {
 import SongList from "../SongList/SongList";
 import LyricsScreen from "../LyricsScreen/LyricsScreen";
 import MainScreen from "../MainScreen/MainScreen";
+import PlayerContext from "../../PlayerContext";
 
-const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
+const NowPlaying = ({ addScreen, token, createArtistScreen }) => {
   const [trackName, setTrackName] = useState();
   const [albumName, setAlbumName] = useState();
   const [artistName, setartistName] = useState();
-  const [player] = useState(p);
+  const [player] = useContext(PlayerContext);
   const [elapsed, setElapsed] = useState(0);
   const [left, setLeft] = useState(1);
   const elapsedRef = useRef(elapsed);
@@ -36,7 +37,7 @@ const NowPlaying = ({ player: p, addScreen, token, createArtistScreen }) => {
         const { name } = a;
         addScreen(
           { target: { innerText: name } },
-          <SongList album={a} player={player} token={token} />
+          <SongList album={a} token={token} />
         );
       });
     });

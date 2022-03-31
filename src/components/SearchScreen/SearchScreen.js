@@ -7,7 +7,7 @@ import {
 import SongList from "../SongList/SongList";
 import MainScreen from "../MainScreen/MainScreen";
 
-const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls, handleContextMenu }) => {
+const SearchScreen = ({ token, addNewScreen, toggleKeyControls, handleContextMenu }) => {
   const [results, setResults] = useState(<></>);
 
   const formRef = useRef(null);
@@ -45,7 +45,7 @@ const SearchScreen = ({ token, addNewScreen, player, toggleKeyControls, handleCo
             onClick={() =>
               addNewScreen(
                 { target: { innerText: a.name } },
-                <SongList album={a} player={player} token={token} />
+                <SongList album={a} token={token} />
               )
             }
             onContextMenu={(e) => addContextMenu(e, a, i)}

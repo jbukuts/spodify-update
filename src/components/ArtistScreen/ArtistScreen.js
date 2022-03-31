@@ -10,7 +10,6 @@ import MainScreen from "../MainScreen/MainScreen";
 const ArtistScreen = ({
   artist,
   propAlbums,
-  player,
   addNewScreen,
   token,
   handleContextMenu,
@@ -106,7 +105,7 @@ const ArtistScreen = ({
             onClick={(e) =>
               addNewScreen(
                 e,
-                <SongList album={a} player={player} token={token} />
+                <SongList album={a} token={token} />
               )
             }
           >

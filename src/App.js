@@ -21,6 +21,7 @@ import ArtistScreen from "./components/ArtistScreen/ArtistScreen";
 import SearchScreen from "./components/SearchScreen/SearchScreen";
 import ContextMenu from "./components/ContextMenu/ContextMenu";
 import ControlsModal from "./components/ControlsModal/ControlsModal";
+import { PlayerProvider } from "./PlayerContext";
 
 const App = () => {
   const [screens, setScreenState] = useState([]);
@@ -121,7 +122,6 @@ const App = () => {
         token={token}
         artist={artist}
         addNewScreen={addNewScreen}
-        player={player}
         propAlbums={filteredAlbums}
       />
     );
@@ -139,7 +139,7 @@ const App = () => {
               onClick={() =>
                 addNewScreen(
                   { target: { innerText: name } },
-                  <SongList album={a} player={player} token={token} />
+                  <SongList album={a} token={token} />
                 )
               }
             >
@@ -226,7 +226,6 @@ const App = () => {
                 handleContextMenu={handleContextMenu}
                 toggleKeyControls={toggleKeyControls}
                 token={token}
-                player={player}
                 addNewScreen={addNewScreen}
               />
             )
@@ -380,106 +379,107 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <div
-        className={`screen${crtMode ? " crtEffect" : ""}`}
-        ref={mainRef}
-        style={{ opacity: showScreen ? "1" : "0" }}
-      >
-        {fullyLoaded && (
-          <MenuBar goBack={goBack} title={menuTitle[0]} showClock={showClock} />
-        )}
-        <div className="menuContainer" ref={screenRef}>
-          <MainScreen>
-            {!token && <Login></Login>}
-            {fullyLoaded && (
-              <>
-                <p
-                  className="menuItem isMenu"
-                  onClick={(e) => addNewScreen(e, createMusicScreen())}
-                >
-                  Music
-                </p>
-                <p className="disabled">Extras</p>
-                <p
-                  className="menuItem isMenu"
-                  onClick={(e) =>
-                    addNewScreen(
-                      e,
-                      <SettingsScreen
-                        token={token}
-                        addNewScreen={addNewScreen}
-                        showClock={showClock}
-                        setShowClock={setShowClock}
-                        screenEffect={crtMode}
-                        setScreenEffect={setCrtMode}
-                        logout={logUserOut}
-                        albumAmount={albums.current.length}
-                      />
-                    )
-                  }
-                >
-                  Settings
-                </p>
-                <p className="menuItem" onClick={shuffleSongs}>
-                  Shuffle Songs
-                </p>
-                <p
-                  className="menuItem isMenu"
-                  onClick={(e) =>
-                    addNewScreen(
-                      e,
-                      <NowPlaying
-                        player={player}
-                        addScreen={addNewScreen}
-                        token={token}
-                        createArtistScreen={createArtistCallback}
-                      />
-                    )
-                  }
-                >
-                  Now Playing
-                </p>
-              </>
-            )}
-          </MainScreen>
-          {fullyLoaded && screens}
-        </div>
-      </div>
-      {albumArt && (
-        <MiniPlayer
-          playerState={playState}
-          imageURL={albumArt}
-          setShowScreen={setShowScreen}
-          accentColor={accentColor}
-        />
-      )}
-      {showScreen && (
-        <button
-          style={{ color: accentColor, borderColor: accentColor }}
-          className="controlButton"
-          onClick={() => setShowControls((old) => !old)}
+    <PlayerProvider value={[player, setPlayer]}>
+      <div className="App">
+        <div
+          className={`screen${crtMode ? " crtEffect" : ""}`}
+          ref={mainRef}
+          style={{ opacity: showScreen ? "1" : "0" }}
         >
-          Controls
-        </button>
-      )}
-      {showControls && (
-        <ControlsModal
-          isOpen={showControls}
-          onClose={() => setShowControls(false)}
-        ></ControlsModal>
-      )}
-      <Blobs imageURL={albumArt} setInverseColor={setAccentColor}></Blobs>
-      {showContextMenu && (
-        <ContextMenu
-          setShowMenu={setShowContextMenu}
-          showMenu={showContextMenu}
-          innerMenu={contextMenu}
-          xPos={menuXPos}
-          yPos={menuYPos}
-        />
-      )}
-    </div>
+          {fullyLoaded && (
+            <MenuBar goBack={goBack} title={menuTitle[0]} showClock={showClock} />
+          )}
+          <div className="menuContainer" ref={screenRef}>
+            <MainScreen>
+              {!token && <Login></Login>}
+              {fullyLoaded && (
+                <>
+                  <p
+                    className="menuItem isMenu"
+                    onClick={(e) => addNewScreen(e, createMusicScreen())}
+                  >
+                    Music
+                  </p>
+                  <p className="disabled">Extras</p>
+                  <p
+                    className="menuItem isMenu"
+                    onClick={(e) =>
+                      addNewScreen(
+                        e,
+                        <SettingsScreen
+                          token={token}
+                          addNewScreen={addNewScreen}
+                          showClock={showClock}
+                          setShowClock={setShowClock}
+                          screenEffect={crtMode}
+                          setScreenEffect={setCrtMode}
+                          logout={logUserOut}
+                          albumAmount={albums.current.length}
+                        />
+                      )
+                    }
+                  >
+                    Settings
+                  </p>
+                  <p className="menuItem" onClick={shuffleSongs}>
+                    Shuffle Songs
+                  </p>
+                  <p
+                    className="menuItem isMenu"
+                    onClick={(e) =>
+                      addNewScreen(
+                        e,
+                        <NowPlaying
+                          addScreen={addNewScreen}
+                          token={token}
+                          createArtistScreen={createArtistCallback}
+                        />
+                      )
+                    }
+                  >
+                    Now Playing
+                  </p>
+                </>
+              )}
+            </MainScreen>
+            {fullyLoaded && screens}
+          </div>
+        </div>
+        {albumArt && (
+          <MiniPlayer
+            playerState={playState}
+            imageURL={albumArt}
+            setShowScreen={setShowScreen}
+            accentColor={accentColor}
+          />
+        )}
+        {showScreen && (
+          <button
+            style={{ color: accentColor, borderColor: accentColor }}
+            className="controlButton"
+            onClick={() => setShowControls((old) => !old)}
+          >
+            Controls
+          </button>
+        )}
+        {showControls && (
+          <ControlsModal
+            isOpen={showControls}
+            onClose={() => setShowControls(false)}
+          ></ControlsModal>
+        )}
+        <Blobs imageURL={albumArt} setInverseColor={setAccentColor}></Blobs>
+        {showContextMenu && (
+          <ContextMenu
+            setShowMenu={setShowContextMenu}
+            showMenu={showContextMenu}
+            innerMenu={contextMenu}
+            xPos={menuXPos}
+            yPos={menuYPos}
+          />
+        )}
+      </div>
+    </PlayerProvider>
   );
 };
 
